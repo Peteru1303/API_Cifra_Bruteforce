@@ -104,6 +104,7 @@ function descriptografarForcaBruta(req: Request, res: Response): void {
     let d: number
     let flag: boolean = false;
     let palavra: any = [];
+    let auxiliar: any = [];
     var fs = require("fs");
     var text = fs.readFileSync("./Palavras.txt", "utf-8"); //utilizando read file sync pala ler arquivo de palavras em utf-8
     var textByLine = text.split("\n") 
@@ -128,7 +129,9 @@ function descriptografarForcaBruta(req: Request, res: Response): void {
                     palavra = textoClaro
                     if (findWord(palavra, textByLine)){ //verifica se a primeira palavra é verdadeira a partir da função
                         flag = true //se a primeira palavra for verdadeira, a flag é verdadeira.
+                        console.log("entrou na flag normal")
                     }
+                    palavra = palavra + (String.fromCharCode(resultado[i])) //adiciona o "espaço" para a palavra total, utilizado para subtrair com o texto Claro dps
             }
     }
         else if(mensagem.codePointAt(i)>96){ //se a mensagem original for da familia de lowercase
@@ -142,9 +145,19 @@ function descriptografarForcaBruta(req: Request, res: Response): void {
         console.log(resultado[i])
         textoClaro = textoClaro + (String.fromCharCode(resultado[i])); //concatena o resultado da iteração atual ao resultado final
 
-        if (!flag){
-        if (findWord(textoClaro, textByLine)){ //verifica se a primeira palavra é verdadeira a partir da função
+        if (!flag && i == (mensagem.length - 1)){ //quando percorrer a mensagem inteira
+            auxiliar = textoClaro.split(palavra); //equivale ao texto claro removendo tudo exceto a ultima palavra
+            console.log(auxiliar[1] + "auxiliar") //isso cria dois vetores, um vazio que foi o que removeu, e um que é a ultima palavra
+            if (findWord(auxiliar[1], textByLine)){ //verifica se a ultima palavra é verdadeira a partir da função
+                flag = true //se a primeira palavra for verdadeira, a flag é verdadeira.
+                console.log("entrou na flag de palavra final")
+                }
+            }
+
+        if (!flag && i == (mensagem.length - 1)){ //quando percorrer a mensagem inteira
+        if (findWord(textoClaro, textByLine)){ //verifica se a mensagem inteira é verdadeira a partir da função
             flag = true //se a primeira palavra for verdadeira, a flag é verdadeira.
+            console.log("entrou na flag final")
             }
         }
     }
