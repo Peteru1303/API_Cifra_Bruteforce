@@ -103,6 +103,7 @@ function descriptografarForcaBruta(req: Request, res: Response): void {
     let textoClaro: any = [];
     let d: number
     let flag: boolean = false;
+    let palavra: any = [];
     var fs = require("fs");
     var text = fs.readFileSync("./Palavras.txt", "utf-8"); //utilizando read file sync pala ler arquivo de palavras em utf-8
     var textByLine = text.split("\n") 
@@ -124,7 +125,8 @@ function descriptografarForcaBruta(req: Request, res: Response): void {
             }
                 if (resultado[i] < 90){ //se for fora do escopo de letras (Espaço vazio entra aqui)
                     resultado [i] -= (deslocamento % 26)  //reverter o deslocamento
-                    if (findWord(textoClaro, textByLine)){ //verifica se a primeira palavra é verdadeira a partir da função
+                    palavra = textoClaro
+                    if (findWord(palavra, textByLine)){ //verifica se a primeira palavra é verdadeira a partir da função
                         flag = true //se a primeira palavra for verdadeira, a flag é verdadeira.
                     }
             }
@@ -139,6 +141,12 @@ function descriptografarForcaBruta(req: Request, res: Response): void {
     }
         console.log(resultado[i])
         textoClaro = textoClaro + (String.fromCharCode(resultado[i])); //concatena o resultado da iteração atual ao resultado final
+
+        if (!flag){
+        if (findWord(textoClaro, textByLine)){ //verifica se a primeira palavra é verdadeira a partir da função
+            flag = true //se a primeira palavra for verdadeira, a flag é verdadeira.
+            }
+        }
     }
         console.log(textoClaro + " ")
 
